@@ -1,8 +1,11 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
+import {store} from './store/store'
+Vue.config.productionTip = true
 
-Vue.config.productionTip = false
+export const bus = new Vue();
 
 new Vue({
+  store: store,
   render: h => h(App),
 }).$mount('#app')
