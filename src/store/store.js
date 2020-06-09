@@ -8,8 +8,8 @@ export const store = new Vuex.Store({
         mapNumber: 1,
         map: {
             map1: {
-                width: 1500,
-                height: 600,
+                width: 1400,
+                height: 500,
                 wall: []
             }
         },
@@ -41,7 +41,7 @@ export const store = new Vuex.Store({
                 height: 80,
                 vector: [],
                 x: 1000,
-                y: 500,
+                y: 200,
                 step: 1,
                 up: false,
                 down: false,

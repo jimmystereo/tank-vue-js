@@ -37,7 +37,6 @@ export default {
         // console.log(this.bullet.getPosition());
         window.clearInterval(flying);
         this.bullet.fired = false;
-        alert("WALL");
       }
     },
     startFire: function() {
