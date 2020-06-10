@@ -1,7 +1,10 @@
 <template>
-  <div class="tank1" 
+  <div
+    id="tank1"
+    class='tanks'
     ref="tank1"
-  v-bind:style="{marginLeft: this.tank.x+'px',marginTop: this.tank.y+'px',height: this.tank.height+'px',width:this.tank.width+'px'}">
+    v-bind:style="{marginLeft: this.tank.x+'px',marginTop: this.tank.y+'px',height: this.tank.height+'px',width:this.tank.width+'px'}"
+  >
     <div
       ref="tank1_cannon"
       id="tank1_cannon"
@@ -13,63 +16,49 @@
 </template>
 
 <script>
-import { bus } from "../main";
+var moveCannonTime;
+var moveTankTime;
 import moveTank from "../mixins/moveTank";
 import moveCannon from "../mixins/moveCannon";
 import collision from "../mixins/collision";
 export default {
+  name: "tank1",
   data() {
     return {};
   },
-  methods: {
-    flyingVector: function() {
-      let deg = this.cannon.deg;
-      let X = Math.cos((deg * Math.PI) / 180);
-      let Y = Math.sin((deg * Math.PI) / 180);
-      //   if(deg>=0&&deg<=180){
-      //   Y = -1*Math.abs(Y);
-      //   }
-      //   if(deg>=270&&deg<=360){
-      //       Y = Math.abs(Y);
-      //   }
-      this.tank.vector = [X, Y];
-    }
-  },
+  methods: {},
   computed: {
+    bullet: function() {
+      return this.$store.state.bullet1;
+    },
     tank: function() {
       return this.$store.state.tank1.tank;
     },
-    cannon: function () {
-        return this.$store.state.tank1.cannon;
+    cannon: function() {
+      return this.$store.state.tank1.cannon;
     },
     opponent: function() {
       return this.$store.state.tank2;
-    },
+    }
   },
   mixins: [moveTank, moveCannon, collision],
   created() {
-    setInterval(() => this.moveCannon(), 10);
-    setInterval(() => this.moveTank(), 10);
-    bus.$on("fire1", data => {
-      if (!this.cannon.fired) {
-        data;
-        this.flyingVector();
-        bus.$emit("tank1Data", this);
-      }
-    });
+    moveCannonTime = setInterval(() => this.moveCannon(), 10);
+    moveTankTime = setInterval(() => this.moveTank(), 10);
+  },
+  beforeDestroy() {
+    window.clearInterval(moveCannonTime);
+    window.clearInterval(moveTankTime);
   }
 };
 </script>
 <style scoped>
-.tank1 {
-  text-align: center;
-  border-radius: 50%;
-  position: absolute;
+#tank1 {
+  border-color: rgb(0, 71, 0);
   background-color: green;
-  margin: 0 0;
 }
 #cannon_top {
-  z-index: 1000;
+  z-index: 100;
   border-radius: 50%;
   position: relative;
   left: 50%;

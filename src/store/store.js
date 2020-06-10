@@ -4,26 +4,33 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
+        mine1: true,
+        mine2:true,
         maxType: 3,
-        mapNumber: 1,
+        mapNumber: 0,
         map: {
             map1: {
-                width: 1400,
+                width: 1000,
                 height: 500,
                 wall: []
             }
         },
         walls: {
             wall1: {
-                height: 200,
+                height: 100,
                 width: 5,
                 x: 500,
                 y: 300,
             },
             wall2: {
-                height: 200,
+                height: 100,
                 width: 5,
                 x: 800,
+                y: 200,
+            }, wall3: {
+                height: 100,
+                width: 5,
+                x: 400,
                 y: 200,
             }
         },
@@ -40,7 +47,7 @@ export const store = new Vuex.Store({
                 width: 80,
                 height: 80,
                 vector: [],
-                x: 1000,
+                x: 200,
                 y: 200,
                 step: 1,
                 up: false,
@@ -59,11 +66,12 @@ export const store = new Vuex.Store({
                 counterClockWise: false
             },
             tank: {
+                color: 'red',
                 life: 3,
                 width: 80,
                 height: 80,
                 vector: [],
-                x: 0,
+                x: 110,
                 y: 0,
                 step: 1,
                 up: false,
@@ -74,9 +82,12 @@ export const store = new Vuex.Store({
             }
         },
         bullet1: {
-            
-            color:'rgb(224, 140, 12)',
-            type:1,
+            mine: false,
+            exploded: false,
+            zIndex: 10,
+            color: 'rgb(224, 140, 12)',
+            tmpType: 1,
+            type: 1,
             height: 10,
             width: 30,
             fired: false,
@@ -86,11 +97,15 @@ export const store = new Vuex.Store({
             vectorY: 0,
             x: 500,
             y: 500,
-            load: 30
+            load: [30,30,30]
         },
         bullet2: {
-            color:'rgb(224, 140, 12)',
-            type:1,
+            mine: false,
+            exploded: false,
+            zIndex: 10,
+            color: 'rgb(224, 140, 12)',
+            tmpType: 1,
+            type: 1,
             height: 10,
             width: 30,
             fired: false,
@@ -100,8 +115,125 @@ export const store = new Vuex.Store({
             vectorY: 0,
             x: 500,
             y: 500,
-            load: 30
+            load: [30,30,30]
+        },
+        initialState: function () {
+            return {
+                mine1: true,
+                maxType: 3,
+                mapNumber: 0,
+                map: {
+                    map1: {
+                        width: 1000,
+                        height: 500,
+                        wall: []
+                    }
+                },
+                walls: {
+                    wall1: {
+                        height: 100,
+                        width: 5,
+                        x: 500,
+                        y: 300,
+                    },
+                    wall2: {
+                        height: 100,
+                        width: 5,
+                        x: 800,
+                        y: 200,
+                    }, wall3: {
+                        height: 100,
+                        width: 5,
+                        x: 400,
+                        y: 200,
+                    }
+                },
+                tank1: {
+                    cannon: {
+                        fired: false,
+                        degStep: 0.5,
+                        deg: 0,
+                        clockWise: false,
+                        counterClockWise: false
+                    },
+                    tank: {
+                        life: 3,
+                        width: 80,
+                        height: 80,
+                        vector: [],
+                        x: 200,
+                        y: 200,
+                        step: 1,
+                        up: false,
+                        down: false,
+                        left: false,
+                        right: false,
+                        cannon_space: []
+                    }
+                },
+                tank2: {
+                    cannon: {
+                        fired: false,
+                        degStep: 0.5,
+                        deg: 0,
+                        clockWise: false,
+                        counterClockWise: false
+                    },
+                    tank: {
+                        color: 'red',
+                        life: 3,
+                        width: 80,
+                        height: 80,
+                        vector: [],
+                        x: 110,
+                        y: 0,
+                        step: 1,
+                        up: false,
+                        down: false,
+                        left: false,
+                        right: false,
+                        cannon_space: []
+                    }
+                },
+                bullet1: {
+                    mine: false,
+                    exploded: false,
+                    zIndex: 10,
+                    color: 'rgb(224, 140, 12)',
+                    tmpType: 1,
+                    type: 1,
+                    height: 10,
+                    width: 30,
+                    fired: false,
+                    speed: 5,
+                    deg: 0,
+                    vectorX: 0,
+                    vectorY: 0,
+                    x: 500,
+                    y: 500,
+                    load: 30
+                },
+                bullet2: {
+                    mine: false,
+                    exploded: false,
+                    zIndex: 10,
+                    color: 'rgb(224, 140, 12)',
+                    tmpType: 1,
+                    type: 1,
+                    height: 10,
+                    width: 30,
+                    fired: false,
+                    speed: 5,
+                    deg: 0,
+                    vectorX: 0,
+                    vectorY: 0,
+                    x: 500,
+                    y: 500,
+                    load: 30
+                }
+            }
         }
+
     },
     getters: {
         centerCoordinate1: state => {
@@ -117,14 +249,20 @@ export const store = new Vuex.Store({
         currentMap: state => {
             let currentMap;
             if (state.mapNumber == 1) {
-                state.map.map1.walls = [state.walls.wall1, state.walls.wall2];
+                state.map.map1.walls = [state.walls.wall1, state.walls.wall2, state.walls.wall3];
                 currentMap = state.map.map1;
             }
             return currentMap;
         }
-
     },
     mutations: {
+        resetState(state) {
+            // acquire initial state
+            const s = state.initialState();
+            Object.keys(s).forEach(key => {
+                state[key] = s[key]
+            })
+        },
         resetControl: state => {
             state.tank1.tank.left = false;
             state.tank1.tank.right = false;

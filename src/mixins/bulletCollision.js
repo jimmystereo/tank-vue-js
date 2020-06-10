@@ -1,6 +1,9 @@
 export default{
     methods: {
         bulletCollision: function(){
+            if(this.bullet.type == 3){
+                return false;
+            }
             const top = this.bullet.y;
             const bottom = this.bullet.y+this.bullet.height;
             const left = this.bullet.x;

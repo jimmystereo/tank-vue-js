@@ -15,6 +15,7 @@ import moveCannon from "../mixins/moveCannon";
 import checkHit from "../mixins/checkHit";
 import bulletCollision from "../mixins/bulletCollision";
 export default {
+  name:'bullet2',
   data() {
     return {};
   },

@@ -1,3 +1,4 @@
+
 <template>
   <div
     id="court_container"
@@ -30,27 +31,16 @@
     @keydown.107="switchWeapon1()"
     @keydown.space="fire2()"
   >
-    <h2>
-      GREEN:
-      bullet :{{bullet1.load}} life: {{tank1.tank.life}}   
-    </h2>
-    <h2>
-    
-      RED:
-      bullet :{{bullet2.load}} life: {{tank2.tank.life}}
-    </h2>
-      <inform1></inform1>
-    <mapOne>
-      <bulletOne></bulletOne>
-      <bulletTwo></bulletTwo>
-      <tankOne></tankOne>
-      <tankTwo></tankTwo>
-    </mapOne>
-    <h2>
-      GREEN:
-      bullet :{{bullet1.load}} life: {{tank1.tank.life}}
-    </h2>
-   
+    <button v-on:click="switchMap()"></button>
+    <button class="startPageButton" v-on:click="resetState()">reset</button>
+    <inform1></inform1>
+    <startPage v-if="mapNumber == 0"></startPage>
+    <map1 v-if="mapNumber == 1">
+      <bullet1></bullet1>
+      <bullet2></bullet2>
+      <tank1></tank1>
+      <tank2></tank2>
+    </map1>
   </div>
 </template>
 
@@ -60,16 +50,18 @@ import tank1 from "./tank1";
 import tank2 from "./tank2";
 import bullet1 from "./bullet1";
 import bullet2 from "./bullet2";
-import map1 from "./map1";
-import inform1 from "./inform1"
+import map1 from "./maps/map1";
+import inform1 from "./inform1";
+import startPage from "./maps/startPage";
 export default {
   components: {
-    tankOne: tank1,
-    tankTwo: tank2,
-    bulletOne: bullet1,
-    mapOne: map1,
-    bulletTwo: bullet2,
-    inform1: inform1
+    tank1,
+    tank2,
+    bullet1,
+    map1,
+    bullet2,
+    inform1,
+    startPage
   },
   data() {
     return {
@@ -77,21 +69,29 @@ export default {
     };
   },
   methods: {
-    controlPad: function(function_name, direction, tank_number) {
-      this.$store.commit(function_name, [direction, tank_number]);
-      this.text_direction = direction;
+    resetState: function() {
+      this.$store.commit("resetState");
     },
-    switchWeapon1:function () {
-      if(++this.$store.state.bullet1.type>this.$store.state.maxType){
-        this.$store.state.bullet1.type=1;
+    controlPad: function(function_name, direction, tank_number) {
+      if (this.$store.state.mapNumber >= 1) {
+        this.$store.commit(function_name, [direction, tank_number]);
+        this.text_direction = direction;
       }
-      
+    },
+    switchWeapon1: function() {
+      if (++this.$store.state.bullet1.tmpType > this.$store.state.maxType) {
+        this.$store.state.bullet1.tmpType = 1;
+      }
     },
     fire1: function() {
       bus.$emit("fire1", "nothing");
     },
     fire2: function() {
       bus.$emit("fire2", "nothing");
+    },
+    switchMap: function() {
+      this.$store.state.mapNumber--;
+      console.log(this.$store.state.mapNumber);
     }
   },
   computed: {
@@ -109,23 +109,44 @@ export default {
     },
     tank2: function() {
       return this.$store.state.tank2;
+    },
+    mapNumber: function() {
+      return this.$store.state.mapNumber;
     }
   },
   created: function() {}
 };
 </script>
-<style scoped>
+<style >
 #court_container {
+  
   border-color: transparent;
-  background-color: white;
+  background-color: rgb(255, 248, 183);
   margin-top: 0%;
   width: 100%;
-  height: calc(100%);
+  height: 10000000px;
 }
 p {
   display: inline;
 }
 h2 {
   display: inline;
+}
+.tanks {
+  z-index: 47;
+  border-width: 5px;
+  border-style: outset;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  margin: 0 0;
+}
+.walls {
+  position: absolute;
+
+  border-color: rgb(255, 152, 56);
+  background-color: rgb(83, 40, 5);
+  border-style: outset;
+  border-width: 5px;
 }
 </style>

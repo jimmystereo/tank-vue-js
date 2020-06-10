@@ -1,6 +1,6 @@
 <template>
   <div
-    id="wall2"
+    id="wall3"
         class="walls"
 
     v-bind:style="{height: this.wall.height+'px',width:this.wall.width+'px',marginTop:this.wall.y+'px',marginLeft:this.wall.x+'px'}"
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: 'wall1',
+    name: 'wall3',
   components: {},
   data() {
     return {
@@ -19,7 +19,7 @@ export default {
   methods: {},
   computed: {
     wall: function () {
-      return this.$store.state.walls.wall2;
+      return this.$store.state.walls.wall3;
     }
   },
   created: function() {}
