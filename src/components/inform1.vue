@@ -1,38 +1,43 @@
 <template>
-  <div id="inform1" class="informs" style="display= inline-flex">
-    <div id="health">
-      GREEN: {{tank.tank.life}}
-    </div>
-    <div id="weapon1" v-bind:class="{weapon_block:true,chosed_weapon:this.type1}">{{bullet.load[0]}}</div>
-    <div id="weapon2" v-bind:class="{weapon_block:true,chosed_weapon:this.type2}">{{bullet.load[1]}}</div>
-    <div id="weapon3" v-bind:class="{weapon_block:true,chosed_weapon:this.type3}">{{bullet.load[2]}}</div>
+  <div id="inform1" class="informs" style="display= inline-flex" v-if='this.map>=1'>
+    <div id="health">GREEN: {{tank.tank.life}}</div>
+    <div id="weapon1" v-bind:class="{weapon_block:true,chosed_weapon:this.tmpType==1}">{{load[0]}}</div>
+    <div id="weapon2" v-bind:class="{weapon_block:true,chosed_weapon:this.tmpType==2}">{{load[1]}}</div>
+    <div id="weapon3" v-bind:class="{weapon_block:true,chosed_weapon:this.tmpType==3}">{{load[2]}}</div>
   </div>
 </template>
 
 <script>
+import { bus } from "../main";
+
 export default {
   name: "inform1",
   data() {
-    return {};
+    return {
+     
+    };
   },
   methods: {
   },
   computed: {
-    type1: function() {
-      return this.$store.state.bullet1.tmpType == 1;
-    },
-    type2: function() {
-      return this.$store.state.bullet1.tmpType == 2;
-    },
-    type3: function() {
-      return this.$store.state.bullet1.tmpType == 3;
-    },
-    bullet: function() {
-      return this.$store.state.bullet1;
+    tmpType: function() {
+      return this.$store.state.bullet1.tmpType;
     },
     tank: function() {
       return this.$store.state.tank1;
+    },
+    load: function(){
+      return this.$store.state.bullet1.load;
+    },
+    map: function () {
+      return this.$store.state.mapNumber;
     }
+  },
+  created() {
+    bus.$on("fire1", data => {
+      data;
+      this.$forceUpdate();
+    });
   }
 };
 </script>
@@ -72,13 +77,13 @@ export default {
   height: 20%;
   margin-left: 0%;
 }
-.informs{
-    position: relative;
-    background-color : rgb(238, 121, 75);
-    width: 20%;
-    margin: 0 auto;
+.informs {
+  position: relative;
+  background-color: rgb(238, 121, 75);
+  width: 20%;
+  margin: 0 auto;
 }
-#inform1{
-    left: 30%;
+#inform1 {
+  left: 30%;
 }
 </style>

@@ -34,8 +34,9 @@
     <button v-on:click="switchMap()"></button>
     <button class="startPageButton" v-on:click="resetState()">reset</button>
     <inform1></inform1>
-    <startPage v-if="mapNumber == 0"></startPage>
-    <map1 v-if="mapNumber == 1">
+    <startPage v-if="mapNumber == -1"></startPage>
+        <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
+    <map1 v-if="mapNumber >= 1">
       <bullet1></bullet1>
       <bullet2></bullet2>
       <tank1></tank1>
@@ -50,18 +51,21 @@ import tank1 from "./tank1";
 import tank2 from "./tank2";
 import bullet1 from "./bullet1";
 import bullet2 from "./bullet2";
-import map1 from "./maps/map1";
+import map1 from "./maps/map";
 import inform1 from "./inform1";
 import startPage from "./maps/startPage";
+import chooseMapPage from "./maps/chooseMapPage";
+
 export default {
   components: {
     tank1,
     tank2,
     bullet1,
-    map1,
     bullet2,
     inform1,
-    startPage
+    map1,
+    startPage,
+    chooseMapPage
   },
   data() {
     return {

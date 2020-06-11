@@ -77,8 +77,7 @@ export default {
       if (!this.bullet.fired && this.bullet.load[this.bullet.type - 1] > 0) {
         this.bullet.type = this.bullet.tmpType;
 
-        this.bullet.load[this.bullet.type-1]--;
-
+        this.$store.state.bullet1.load[this.$store.state.bullet1.type-1]--;
         this.flyingVector();
         this.weaponPrepare(data);
         this.startFire();

@@ -1,10 +1,11 @@
 <template>
   <div
     id="startPage"
-    v-bind:style="{height: this.currentMap.height+'px',width:this.currentMap.width+'px'}"
+    v-bind:style="{height: this.startPage.height+'px',width:this.startPage.width+'px'}"
   >
-    <div id="startPageImg"></div>
-    <button class="startPageButton" v-on:click="switchMap()">Start Game!</button>
+    <div id="startPageImg">
+      <button class="startPageButton" v-on:click="switchMap()">Start Game!</button>
+    </div>
   </div>
 </template>
 
@@ -24,8 +25,9 @@ export default {
     }
   },
   computed: {
-    currentMap: function() {
-      return this.$store.state.map.map1;
+    
+    startPage: function(){
+      return this.$store.state.startPage;
     }
   },
   created: function() {}
@@ -33,8 +35,10 @@ export default {
 </script>
 <style scoped>
 #startPage {
+  border-radius: 30px;
+
   margin: 0 auto;
-  width:1500px;
+  width: 1500px;
   height: 1500px;
   position: relative;
   margin-bottom: 10px;
@@ -45,7 +49,7 @@ export default {
 .startPageButton {
   border-radius: 20px;
   position: relative;
-  margin: 3% auto;
+  margin: 35% auto;
   height: 20%;
   width: 20%;
 }
@@ -55,7 +59,7 @@ export default {
   top: 5%;
   position: relative;
   margin: 0 auto;
-  height: 70%;
+  height: 90%;
   width: 90%;
 }
 

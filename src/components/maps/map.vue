@@ -4,32 +4,35 @@
     v-bind:style="{height: this.currentMap.height+'px',width:this.currentMap.width+'px'}"
   >
     <slot></slot>
-    <wall1></wall1>
-    <wall2></wall2>
-    <wall3></wall3>
+ 
+    <wall v-for ="walls in wall_numbers" :num = 'walls'  v-bind:key='walls'></wall>
   </div>
 </template>
 
 <script>
-import wall1 from "../walls/wall1";
-import wall2 from "../walls/wall2";
-import wall3 from "../walls/wall3";
+import wall from "../walls/wall";
+
 
 export default {
   name: "map1",
-  components: { wall1, wall2, wall3 },
+  components: { wall},
   data() {
     return {
-      text_direction: ""
+  
+      text_direction: []
     };
   },
   methods: {},
   computed: {
     currentMap: function() {
-      return this.$store.state.map.map1;
+      return this.$store.state.maps[this.$store.state.mapNumber-1];
     },
     bullet1: function() {
       return this.$store.state.bullet1;
+    },
+    wall_numbers: function(){
+            return this.$store.state.maps[this.$store.state.mapNumber-1].wall_numbers;
+
     }
   },
   created: function() {}
