@@ -1,5 +1,5 @@
 <template>
-  <div id="inform1" class="informs" v-if="this.map>=1">
+  <div id="inform2" class="informs" v-if="this.map>=1">
     <h1 id="health">{{tank.tank.name}} </h1>
     <div id="healthBlock" v-bind:style="{width: 2*this.tank.tank.life+'px', backgroundColor: this.healthColor}"></div>
     <h2>
@@ -23,13 +23,13 @@ export default {
   methods: {},
   computed: {
     tmpType: function() {
-      return this.$store.state.bullet1.tmpType;
+      return this.$store.state.bullet2.tmpType;
     },
     tank: function() {
-      return this.$store.state.tank1;
+      return this.$store.state.tank2;
     },
     load: function() {
-      return this.$store.state.bullet1.load;
+      return this.$store.state.bullet2.load;
     },
     map: function() {
       return this.$store.state.mapNumber;
@@ -42,7 +42,7 @@ export default {
     }
   },
   created() {
-    bus.$on("fire1", data => {
+    bus.$on("fire2", data => {
       data;
       this.$forceUpdate();
     });
@@ -91,7 +91,7 @@ border-style: solid;
 }
 .informs {
   border-style: solid;
-  border-color: green;
+  border-color: red;
   border-width: 5px;
   display: inline-block;
   position: absolute;
@@ -110,10 +110,10 @@ border-style: solid;
   margin: 0 auto;
   margin-top: 0%;
  }
-#inform1 {
+#inform2{
      margin: 0 auto;
     text-align: center;
-    left: 38%;
+    left: -35%;
     position: relative;
 }
 h2 {

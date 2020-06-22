@@ -19,6 +19,7 @@ import moveCannon from "../mixins/moveCannon";
 import checkHit from "../mixins/checkHit";
 import bulletCollision from "../mixins/bulletCollision";
 import weaponHandler from "../mixins/weaponHandler";
+import checkWinner from "../mixins/checkWinner"
 export default {
   name: "bullet1",
   data() {
@@ -29,10 +30,12 @@ export default {
       this.weaponFly(X, Y);
       if (this.checkHit()) {
         window.clearInterval(flying);
-        this.$store.state.tank2.tank.life--;
-        this.$store.commit("resetControl");
-        this.opponent.tank.color = "black";
-      } else if (this.bulletCollision()||this.bullet.exploded) {
+        this.opponent.tank.life-=this.bullet.damage[this.bullet.type-1];
+        this.reviving();
+        if(this.opponent.tank.life<=0){
+          this.checkWinner();
+        }
+      } else if (this.bulletCollision() || this.bullet.exploded) {
         window.clearInterval(flying);
         this.bullet.fired = false;
         this.tank.cannon.fired = false;
@@ -70,24 +73,36 @@ export default {
     },
     tank: function() {
       return this.$store.state.tank1;
+    },
+     mine: function() {
+      return this.$store.state.mine1;
     }
   },
   created() {
     bus.$on("fire1", data => {
+      this.bullet.type = this.bullet.tmpType;
       if (!this.bullet.fired && this.bullet.load[this.bullet.type - 1] > 0) {
-        this.bullet.type = this.bullet.tmpType;
-
-        this.$store.state.bullet1.load[this.$store.state.bullet1.type-1]--;
+        this.$store.state.bullet1.load[this.$store.state.bullet1.type - 1]--;
         this.flyingVector();
         this.weaponPrepare(data);
         this.startFire();
-      }
-      else if(this.bullet.fired && !this.bullet.exploded&&this.bullet.type==3){
+      } else if (
+        this.bullet.fired &&
+        !this.bullet.exploded &&
+        this.bullet.type == 3&&
+         this.$store.state.mine1[1]
+      ) {
+        this.mine[1] = false;
         this.mineExplode();
       }
     });
+    
   },
-  mixins: [moveTank, moveCannon, checkHit, bulletCollision, weaponHandler]
+   beforeDestroy() {
+    window.clearInterval(flying);
+
+  },
+  mixins: [moveTank, moveCannon, checkHit, bulletCollision, weaponHandler, checkWinner]
 };
 </script>
 <style scoped>

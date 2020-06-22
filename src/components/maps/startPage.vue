@@ -2,14 +2,20 @@
   <div
     id="startPage"
     v-bind:style="{height: this.startPage.height+'px',width:this.startPage.width+'px'}"
-  >
-    <div id="startPageImg">
-      <button class="startPageButton" v-on:click="switchMap()">Start Game!</button>
-    </div>
+  ><div id="nameHolder1">
+    <h1> Player 1 <br></h1>
+  <input v-model = "$store.state.tank1.tank.name" placeholder="enter your name"></div>
+  <div id="nameHolder2">
+    <h1> Player 2 <br></h1>
+  <input v-model = "$store.state.tank2.tank.name" placeholder="enter your name"></div>
+   
+      <button class="startPageButton" v-on:click="switchMap()">Enter</button>   
   </div>
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
   name: "startPage",
   components: {},
@@ -20,8 +26,10 @@ export default {
   },
   methods: {
     switchMap: function() {
-      this.$store.state.mapNumber++;
-      console.log(this.$store.state.mapNumber);
+      $("#startPage").fadeOut(800,this.enter);
+    },
+    enter: function(){
+this.$store.state.mapNumber++
     }
   },
   computed: {
@@ -30,38 +38,50 @@ export default {
       return this.$store.state.startPage;
     }
   },
-  created: function() {}
+  created: function() {},
+  beforeDestroy(){
+    
+  }
 };
 </script>
 <style scoped>
+#nameHolder1{
+    position: absolute;
+    margin-left: 59%;
+    margin-top: 21%;
+    z-index: 20;
+}
+#nameHolder2{
+    position: absolute;
+    margin-left: 14%;
+    margin-top: 21%;
+    z-index: 20;
+}
+input{
+  font-size:xx-large;
+}
 #startPage {
-  border-radius: 30px;
-
+  border-radius: 60px;
+background: url(../../img/startPage.png);
   margin: 0 auto;
   width: 1500px;
   height: 1500px;
   position: relative;
   margin-bottom: 10px;
-  background-color: rgb(37, 52, 133);
+  border-style: solid;
   border-color: black;
   left: 20px;
 }
 .startPageButton {
+  font-size: xx-large;
+  background: url(../../img/Enter.png);
   border-radius: 20px;
   position: relative;
   margin: 35% auto;
   height: 20%;
   width: 20%;
 }
-#startPageImg {
-  background-color: black;
-  border-radius: 20px;
-  top: 5%;
-  position: relative;
-  margin: 0 auto;
-  height: 90%;
-  width: 90%;
-}
+
 
 p {
   display: inline;

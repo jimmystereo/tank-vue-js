@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
-import {store} from './store/store'
+import { store } from './store/store'
+// import $ from 'jquery'
 Vue.config.productionTip = true
 
 export const bus = new Vue();
@@ -11,9 +12,11 @@ new Vue({
 }).$mount('#app')
 
 //關閉預設方向鍵滑動
-window.addEventListener("keydown", function(e) {
+window.addEventListener("keydown", function (e) {
   // space and arrow keys
-  if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-      e.preventDefault();
+  if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    e.preventDefault();
   }
 }, false);
+
+document.getElementsByTagName('body')[0].style.zoom=0.75;

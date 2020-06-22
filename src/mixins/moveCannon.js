@@ -2,7 +2,7 @@ export default {
     methods: {
         moveCannon: function () {
             if (this.cannon.clockWise) {
-            this.cannon.deg += this.cannon.degStep;
+            this.cannon.deg += Number(this.cannon.degStep);
             }
             if (this.cannon.counterClockWise) {
                 this.cannon.deg -= this.cannon.degStep;

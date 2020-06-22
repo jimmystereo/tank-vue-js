@@ -23,7 +23,7 @@ export default {
 
                 this.bullet.width = 30;
                 this.bullet.height = 10;
-                this.bullet.speed = 5;
+                this.bullet.speed = this.bullet.special_speed[0];
                 this.bullet.color = 'rgb(224, 140, 12)';
                 this.bullet.x = this.tank.tank.x + this.tank.tank.width / 2 - this.bullet.width / 2;
                 this.bullet.y = this.tank.tank.y + this.tank.tank.height / 2 - this.bullet.height / 2;
@@ -34,7 +34,7 @@ export default {
 
                 this.bullet.width = 30;
                 this.bullet.height = 10;
-                this.bullet.speed = 10;
+                this.bullet.speed = this.bullet.special_speed[1];
                 this.bullet.color = 'red';
                 this.bullet.x = this.tank.tank.x + this.tank.tank.width / 2 - this.bullet.width / 2;
                 this.bullet.y = this.tank.tank.y + this.tank.tank.height / 2 - this.bullet.height / 2;
@@ -42,8 +42,8 @@ export default {
             else if (type == 3) {
                 this.bullet.zIndex = 1;
 
-                this.bullet.speed = 0;
-                this.bullet.color = 'green';
+                this.bullet.speed = this.bullet.special_speed[2];
+                this.bullet.color = 'rgb(12, 182, 224)';
                 this.bullet.width = 30;
                 this.bullet.height = 30;
                 this.bullet.x = this.tank.tank.x + this.tank.tank.width / 2;
@@ -56,6 +56,10 @@ export default {
                 this.bullet.y += this.bullet.speed * Y;
             }
             else if (this.bullet.type == 3) {
+                if (this.bullet.speed > 0) {
+                    this.bullet.x += this.bullet.speed * X;
+                    this.bullet.y += this.bullet.speed * Y;
+                }
                 let x = this.bullet.x;
                 let y = this.bullet.y;
                 const bullet_centerX = x + this.bullet.width / 2;
@@ -65,8 +69,8 @@ export default {
 
                 let d = Math.sqrt(Math.pow((bullet_centerX - centerX), 2) + Math.pow((bullet_centerY - centerY), 2));
                 if (d <= this.opponent.tank.height * 2) {
-                    if (this.$store.state.mine1) {
-                        this.$store.state.mine1 = false;
+                    if (this.mine[0]) {
+                        this.mine[0]= false;
                         this.mineExplode();
                     }
                 }
@@ -78,14 +82,14 @@ export default {
             this.bullet.color = 'yellow';
             // this.explodeAnim();
             console.log('mineExplode')
-            this.mineTimeout1 = setTimeout(this.explodeAnim, 1000);
+            this.mineTimeout1 = setTimeout(this.explodeAnim, this.bullet.mineExplodeTime*1000);
         },
         explodeAnim: function () {
             this.bullet.zIndex = 200;
-            this.bullet.width = 300;
-            this.bullet.height = 300;
-                this.bullet.x -= this.bullet.width / 2 + 15;
-                this.bullet.y -= this.bullet.height / 2 + 15;
+            this.bullet.width = 400;
+            this.bullet.height = 400;
+            this.bullet.x -= this.bullet.width / 2 + 15;
+            this.bullet.y -= this.bullet.height / 2 + 15;
             console.log('explodeAnim')
 
             setTimeout(this.explodeAnim2, 100);
@@ -98,7 +102,9 @@ export default {
         exploded: function () {
             this.bullet.fired = false;
             this.bullet.exploded = true;
-            this.$store.state.mine1 = true;
+            this.mine[0] = true;
+            this.mine[1] = true;
+
             console.log('exploded')
         }
     },

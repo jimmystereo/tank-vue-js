@@ -1,17 +1,14 @@
 <template>
   <div
     id="tank1"
-    class='tanks'
+    class="tanks"
     ref="tank1"
-    v-bind:style="{marginLeft: this.tank.x+'px',marginTop: this.tank.y+'px',height: this.tank.height+'px',width:this.tank.width+'px'}"
+    v-bind:style="{marginLeft: this.tank.x+'px',marginTop: this.tank.y+'px',height: this.tank.height+'px',width:this.tank.width+'px', backgroundColor: this.tank.color}"
   >
-    <div
-      ref="tank1_cannon"
-      id="tank1_cannon"
-      v-bind:style="{transform:'rotate('+this.cannon.deg+'deg)'}"
-    >
+    <div id="tank1_cannon" v-bind:style="{transform:'rotate('+this.cannon.deg+'deg)'}">
       <div id="cannon_top"></div>
     </div>
+    <h5 id="name">{{tank.name}}</h5>
   </div>
 </template>
 
@@ -55,7 +52,6 @@ export default {
 <style scoped>
 #tank1 {
   border-color: rgb(0, 71, 0);
-  background-color: green;
 }
 #cannon_top {
   z-index: 100;
@@ -69,6 +65,7 @@ export default {
   margin: 0 auto;
 }
 #tank1_cannon {
+  border-radius:15px;
   transform-origin: right center;
   position: relative;
   top: calc(50% - 10px);
@@ -79,7 +76,12 @@ export default {
   background-color: black;
   margin: 0 auto;
 }
-p {
-  display: inline;
+#name {
+  top: 110%;
+  left: 16%;
+  font-size: x-large;
+  position: absolute;
+  margin: 0 auto;
+  text-align: center;
 }
 </style>

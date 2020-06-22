@@ -10,7 +10,7 @@
 export default {
   name: "wall",
   props: [
-    'num'
+    'wall_num'
   ],
   components: {},
   data() {
@@ -21,12 +21,12 @@ export default {
   methods: {},
   computed: {
     wall: function() {
-      return this.$store.state.walls[this.num];
+      return this.$store.state.walls[this.wall_num];
     }
   },
   created: function() {}
 };
 </script>
 <style >
-
+  
 </style>

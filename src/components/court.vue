@@ -29,13 +29,15 @@
     @keyup.71="controlPad('stopCannon','counterClockWise',2)"
     @keydown.enter="fire1()"
     @keydown.107="switchWeapon1()"
+    @keydown.16="switchWeapon2()"
     @keydown.space="fire2()"
-  >
-    <button v-on:click="switchMap()"></button>
-    <button class="startPageButton" v-on:click="resetState()">reset</button>
-    <inform1></inform1>
+  ><informsBand v-if="mapNumber>=1"><inform1></inform1>
+    <clock></clock>
+    <inform2></inform2></informsBand>
+    
     <startPage v-if="mapNumber == -1"></startPage>
-        <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
+    <endPage v-if="mapNumber == -2"></endPage>
+    <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
     <map1 v-if="mapNumber >= 1">
       <bullet1></bullet1>
       <bullet2></bullet2>
@@ -52,30 +54,33 @@ import tank2 from "./tank2";
 import bullet1 from "./bullet1";
 import bullet2 from "./bullet2";
 import map1 from "./maps/map";
+import informsBand from "./informsBand"
+import inform2 from "./inform2";
 import inform1 from "./inform1";
+import clock from "./clock"
 import startPage from "./maps/startPage";
+import endPage from "./maps/endPage";
 import chooseMapPage from "./maps/chooseMapPage";
-
+import resetState from "../mixins/reset";
 export default {
   components: {
     tank1,
     tank2,
     bullet1,
     bullet2,
+    informsBand,
     inform1,
+    inform2,
+    clock,
     map1,
     startPage,
-    chooseMapPage
+    chooseMapPage,
+    endPage
   },
   data() {
-    return {
-      text_direction: ""
-    };
+    return {};
   },
   methods: {
-    resetState: function() {
-      this.$store.commit("resetState");
-    },
     controlPad: function(function_name, direction, tank_number) {
       if (this.$store.state.mapNumber >= 1) {
         this.$store.commit(function_name, [direction, tank_number]);
@@ -87,6 +92,11 @@ export default {
         this.$store.state.bullet1.tmpType = 1;
       }
     },
+    switchWeapon2: function() {
+      if (++this.$store.state.bullet2.tmpType > this.$store.state.maxType) {
+        this.$store.state.bullet2.tmpType = 1;
+      }
+    },
     fire1: function() {
       bus.$emit("fire1", "nothing");
     },
@@ -96,11 +106,12 @@ export default {
     switchMap: function() {
       this.$store.state.mapNumber--;
       console.log(this.$store.state.mapNumber);
-    }
+    },
+  
   },
   computed: {
     currentMap: function() {
-      return this.$store.state.map.map1;
+      return this.$store.getters.currentMap;
     },
     bullet1: function() {
       return this.$store.state.bullet1;
@@ -118,17 +129,19 @@ export default {
       return this.$store.state.mapNumber;
     }
   },
-  created: function() {}
+  mixins: [resetState],
+  created: function() {
+
+  }
 };
 </script>
 <style >
 #court_container {
-  
   border-color: transparent;
   background-color: rgb(255, 248, 183);
   margin-top: 0%;
   width: 100%;
-  height: 10000000px;
+  height: 1800px;
 }
 p {
   display: inline;
@@ -144,6 +157,7 @@ h2 {
   border-radius: 50%;
   position: absolute;
   margin: 0 0;
+  margin-right: 1px;
 }
 .walls {
   position: absolute;

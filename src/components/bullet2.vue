@@ -1,10 +1,14 @@
 <template>
   <div
-    id="bullet1"
+    id="bullet2"
     v-bind:style="{marginLeft: this.bullet.x+'px',marginTop: this.bullet.y+'px',transform:'rotate('+this.bullet.deg+'deg)',
-    width:this.bullet.width+'px',height: this.bullet.height+'px'}"
-    v-if="this.bullet.fired"
-  ></div>
+    width:this.bullet.width+'px',height: this.bullet.height+'px',
+    backgroundColor:this.bullet.color,  zIndex: this.bullet.zIndex
+}"
+    v-show="this.bullet.fired"
+  >
+    <!-- <div id="explode" v-if="this.explode"></div> -->
+  </div>
 </template>
 
 <script>
@@ -13,39 +17,48 @@ import { bus } from "../main";
 import moveTank from "../mixins/moveTank";
 import moveCannon from "../mixins/moveCannon";
 import checkHit from "../mixins/checkHit";
+import checkWinner from "../mixins/checkWinner";
 import bulletCollision from "../mixins/bulletCollision";
+import weaponHandler from "../mixins/weaponHandler";
 export default {
-  name:'bullet2',
+  name: "bullet2",
   data() {
-    return {};
+    return { explode: false };
   },
   methods: {
     fly: function(X, Y) {
-      this.bullet.x += this.bullet.speed * X;
-      this.bullet.y += this.bullet.speed * Y;
+      this.weaponFly(X, Y);
       if (this.checkHit()) {
-        this.$store.state.tank1.tank.life--;
-
+        window.clearInterval(flying);
+        this.opponent.tank.life -= this.bullet.damage[this.bullet.type - 1];
+        this.reviving();
+        if (this.opponent.tank.life <= 0) {
+          this.checkWinner();
+        }
+      } else if (this.bulletCollision() || this.bullet.exploded) {
         window.clearInterval(flying);
         this.bullet.fired = false;
-      }
-      if (this.bulletCollision()) {
-        // console.log(this.bullet.getPosition());
-        window.clearInterval(flying);
-        this.bullet.fired = false;
+        this.tank.cannon.fired = false;
       }
     },
     startFire: function() {
       let X = this.bullet.vectorX;
       let Y = this.bullet.vectorY;
-      this.bullet.fired = true;
       window.clearInterval(flying);
-      flying = setInterval(() => this.fly(X, Y), 5);
+      this.bullet.fired = true;
+
+      flying = setInterval(() => this.fly(X, Y), 10);
     },
     getPosition: function() {
       let left = this.$refs["bullet_position"].getBoundingClientRect().left;
       let top = this.$refs["bullet_position"].getBoundingClientRect().top;
       return [left, top];
+    },
+    flyingVector: function() {
+      let deg = this.tank.cannon.deg;
+      let X = Math.cos((deg * Math.PI) / 180);
+      let Y = Math.sin((deg * Math.PI) / 180);
+      this.tank.tank.vector = [X, Y];
     }
   },
   computed: {
@@ -57,38 +70,64 @@ export default {
     },
     enemyCenter: function() {
       return this.$store.getters.centerCoordinate1;
+    },
+    tank: function() {
+      return this.$store.state.tank2;
+    },
+    mine: function() {
+      return this.$store.state.mine2;
     }
   },
   created() {
-    bus.$on("tank2Data", data => {
-      if (!this.bullet.fired && this.bullet.load > 0) {
-        this.bullet.load--;
-        this.bullet.vectorX = -1 * data.tank.vector[0];
-        this.bullet.vectorY = -1 * data.tank.vector[1];
-        this.bullet.x =
-          data.tank.x + data.tank.width / 2 - this.bullet.width / 2;
-        this.bullet.y =
-          data.tank.y + data.tank.height / 2 - this.bullet.height / 2;
-        this.bullet.deg = data.cannon.deg;
-        if (this.bullet.deg >= 180) {
-          this.bullet.deg -= 180;
-        }
+    bus.$on("fire2", data => {
+      this.bullet.type = this.bullet.tmpType;
+      if (!this.bullet.fired && this.bullet.load[this.bullet.type - 1] > 0) {
+        this.$store.state.bullet2.load[this.$store.state.bullet2.type - 1]--;
+        this.flyingVector();
+        this.weaponPrepare(data);
         this.startFire();
+      } else if (
+        this.bullet.fired &&
+        !this.bullet.exploded &&
+        this.bullet.type == 3 &&
+        this.$store.state.mine2[1]
+      ) {
+        this.mine[1] = false;
+        this.mineExplode();
       }
     });
   },
-  mixins: [moveTank, moveCannon, checkHit, bulletCollision]
+  beforeDestroy() {
+    window.clearInterval(flying);
+  },
+  mixins: [
+    moveTank,
+    moveCannon,
+    checkHit,
+    bulletCollision,
+    weaponHandler,
+    checkWinner
+  ]
 };
 </script>
 <style scoped>
-#bullet1 {
+#bullet2 {
   transform-origin: center center;
-  z-index: 10;
   user-select: none;
   border-radius: 50%;
   position: absolute;
-
   background-color: rgb(224, 140, 12);
+  margin: 0 0;
+}
+#explode {
+  transform-origin: center center;
+  z-index: 11;
+  user-select: none;
+  border-radius: 50%;
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(224, 54, 12);
   margin: 0 0;
 }
 p {
