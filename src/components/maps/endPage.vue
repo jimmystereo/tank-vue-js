@@ -4,11 +4,14 @@
     v-show="this.showAll"
     v-bind:style="{height: this.endPage.height+'px',width:this.endPage.width+'px',}"
   >
-    <div id="endPageImg" v-bind:class="{haveWinner:getWinner}">
-      <h1 id="winner" v-if="this.getWinner">winner: {{winner[0].tank.name}}</h1>
-      <h1 id="noWinner" v-if="!this.getWinner">No winner!</h1>
-      <button id="restart" class="endPageButton" v-on:click="reset()">Restart Game!</button>
+    <div id="endPageImg" v-bind:class="{haveWinner:champ}">
+      <h1 id="winner" v-if="this.champ">&nbsp; winner: {{winner[0].tank.name}} &nbsp;</h1>
+      <h1 id="noWinner" v-if="!this.champ">No winner!</h1>
+      <button id="restart" class="endPageButton" v-on:click="reset()">EXIT</button>
     </div>
+    <audio id="winner_audio" muted="muted">
+      <source src="../../audio/winner_audio.wav" type="audio/wav" />
+    </audio>
   </div>
 </template>
 
@@ -21,7 +24,7 @@ export default {
   data() {
     return {
       showAll: false,
-      getWinner: true
+      getWinner: false
     };
   },
   methods: {
@@ -34,37 +37,37 @@ export default {
   },
   computed: {
     winner: function() {
-      return this.$store.state.winner;
+      if (this.champ) {
+        return this.$store.state.winner;
+      }
+      return this.$store.state.tank1;
     },
     endPage: function() {
       return this.$store.state.endPage;
     },
-    load: function() {
-      if (this.winner[0].tank.id == 1) {
-        return this.$store.state.bullet1.load;
-      } else {
-        return this.$store.state.bullet2.load;
-      }
+    champ: function() {
+      return this.$store.state.champ;
     }
   },
   mixins: [resetState],
-  beforeCreate: function() {
-    if (this.$store.state.winner[0] == null) {
-      this.getWinner = false;
-    }
-  },
+  beforeCreate: function() {},
   created: function() {},
   mounted: function() {
     this.show();
 
     $("#endPage").fadeIn(1000);
+    if (this.champ) {
+      let a = $("#winner_audio")[0];
+      a.load();
+      a.play();
+    }
   }
 };
 </script>
 <style scoped>
 #endPage {
   border-radius: 30px;
-
+  top: 13%;
   margin: 0 auto;
   width: 1500px;
   height: 1500px;
@@ -78,41 +81,48 @@ export default {
   border-radius: 20px;
   position: relative;
   margin: 50% auto;
+  left: 39%;
   height: 5%;
   width: 16%;
   border-width: 3px;
-  border-color: yellow;
-  background-color: transparent;
+  border-color: black;
+  background-color: white;
 }
 
 .haveWinner {
-  background-image: url(../../img/winner.png) !important;
+  background: url(../../img/winner2.png) !important;
 }
 #endPageImg {
-  background-image: url(../../img/noWinner.png);
+  background: url(../../img/noWinner.png);
   background-color: rgb(255, 255, 255);
+  border-color: white;
+  border-style: solid;
+  border-width: 5px;
   border-radius: 20px;
-  top: 5%;
   position: relative;
   margin: 0 auto;
-  height: 90%;
-  width: 90%;
+  height: 100%;
+  width: 100%;
 }
 
 #winner {
-  text-align: left;
-  left: -0.5%;
-  font-size: 81px;
+  text-align: center;
+  font-size: 149px;
   font-style: italic;
   position: absolute;
-  left: 33%;
-  top: -4%;
+  left: 15%;
+  width: 70%;
+  background-color: wheat;
+  top: 29%;
 }
 #noWinner {
   text-align: center;
-  font-size: 115px;
+  font-size: 149px;
   font-style: italic;
   position: absolute;
-  left: 28%;
+  left: 15%;
+  width: 70%;
+  background-color: wheat;
+  top: 29%;
 }
 </style>

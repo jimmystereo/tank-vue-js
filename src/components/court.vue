@@ -31,10 +31,13 @@
     @keydown.107="switchWeapon1()"
     @keydown.16="switchWeapon2()"
     @keydown.space="fire2()"
-  ><informsBand v-if="mapNumber>=1"><inform1></inform1>
-    <clock></clock>
-    <inform2></inform2></informsBand>
-    
+  >
+    <informsBand v-if="mapNumber>=1">
+      <inform1></inform1>
+      <clock></clock>
+      <inform2></inform2>
+    </informsBand>
+
     <startPage v-if="mapNumber == -1"></startPage>
     <endPage v-if="mapNumber == -2"></endPage>
     <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
@@ -44,20 +47,23 @@
       <tank1></tank1>
       <tank2></tank2>
     </map1>
+    <p id="copy">copyright ©2020 tank-vue.js jimmystereo</p>
   </div>
 </template>
 
 <script>
+import $ from "jquery";
+
 import { bus } from "../main";
 import tank1 from "./tank1";
 import tank2 from "./tank2";
 import bullet1 from "./bullet1";
 import bullet2 from "./bullet2";
 import map1 from "./maps/map";
-import informsBand from "./informsBand"
+import informsBand from "./informsBand";
 import inform2 from "./inform2";
 import inform1 from "./inform1";
-import clock from "./clock"
+import clock from "./clock";
 import startPage from "./maps/startPage";
 import endPage from "./maps/endPage";
 import chooseMapPage from "./maps/chooseMapPage";
@@ -106,8 +112,7 @@ export default {
     switchMap: function() {
       this.$store.state.mapNumber--;
       console.log(this.$store.state.mapNumber);
-    },
-  
+    }
   },
   computed: {
     currentMap: function() {
@@ -130,18 +135,20 @@ export default {
     }
   },
   mixins: [resetState],
-  created: function() {
-
+  created: function() {},
+  mounted(){
+        $("#copy").hide();
+    $("#copy").fadeIn(1000);
   }
 };
 </script>
 <style >
 #court_container {
   border-color: transparent;
-  background-color: rgb(255, 248, 183);
+  background-color: black;
   margin-top: 0%;
   width: 100%;
-  height: 1800px;
+  height: 1200px;
 }
 p {
   display: inline;
@@ -159,12 +166,10 @@ h2 {
   margin: 0 0;
   margin-right: 1px;
 }
-.walls {
+#copy {
   position: absolute;
-
-  border-color: rgb(255, 152, 56);
-  background-color: rgb(83, 40, 5);
-  border-style: outset;
-  border-width: 5px;
+  color: white;
+  top: 1110px;
+  left: 45%;
 }
 </style>

@@ -61,6 +61,7 @@ export default {
   top: calc(-50% - 5px);
   height: 50px;
   width: 50px;
+  /* background:url(../img/tank1.jpg); */
   background-color: rgb(26, 68, 26);
   margin: 0 auto;
 }
@@ -73,10 +74,14 @@ export default {
   z-index: 50;
   height: 20px;
   width: 80px;
-  background-color: black;
+   background-color: black;
+  border-color: gray;
+  border-style:solid;
+  border-width:1px;
   margin: 0 auto;
 }
 #name {
+  color: white;
   top: 110%;
   left: 16%;
   font-size: x-large;

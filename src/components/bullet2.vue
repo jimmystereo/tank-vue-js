@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import $ from "jquery";
+
 var flying;
 import { bus } from "../main";
 import moveTank from "../mixins/moveTank";
@@ -29,6 +31,10 @@ export default {
     fly: function(X, Y) {
       this.weaponFly(X, Y);
       if (this.checkHit()) {
+        if (this.$store.state.sound) {
+          this.hit_effect.load();
+          this.hit_effect.play();
+        }
         window.clearInterval(flying);
         this.opponent.tank.life -= this.bullet.damage[this.bullet.type - 1];
         this.reviving();
@@ -76,6 +82,15 @@ export default {
     },
     mine: function() {
       return this.$store.state.mine2;
+    },
+    hit_effect: function() {
+      return $("#hit_audio")[0];
+    },
+    fire_effect: function() {
+      return $("#missle")[0];
+    },
+    explode_effect: function() {
+      return $("#explode_audio")[0];
     }
   },
   created() {
@@ -96,6 +111,12 @@ export default {
         this.mineExplode();
       }
     });
+  },
+  mounted() {
+    this.hit_effect.load();
+    this.explode_effect.load();
+
+    this.fire_effect.load();
   },
   beforeDestroy() {
     window.clearInterval(flying);

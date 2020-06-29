@@ -30,7 +30,8 @@ export default {
   border-color: blueviolet;
   border-style: outset;
   border-width: 2px;
-    background-color: violet;
+  background: url(../../img/treasure.jpg);
+  background-size: cover;
     border-radius : 50%; 
   }
 </style>

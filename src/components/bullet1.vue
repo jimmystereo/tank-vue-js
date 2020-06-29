@@ -7,19 +7,30 @@
 }"
     v-show="this.bullet.fired"
   >
+    <audio id="missle" muted="muted" preload="auto">
+      <source src="../audio/missle.wav" type="audio/wav" />
+    </audio>
+    <audio id="hit_audio" muted="muted" preload="auto">
+      <source src="../audio/hit.wav" type="audio/wav" />
+    </audio>
+    <audio id="explode_audio" muted="muted" preload="auto">
+      <source src="../audio/explode.wav" type="audio/wav" />
+    </audio>
     <!-- <div id="explode" v-if="this.explode"></div> -->
   </div>
 </template>
 
 <script>
-var flying;
+import $ from "jquery";
+
+var flying1;
 import { bus } from "../main";
 import moveTank from "../mixins/moveTank";
 import moveCannon from "../mixins/moveCannon";
 import checkHit from "../mixins/checkHit";
 import bulletCollision from "../mixins/bulletCollision";
 import weaponHandler from "../mixins/weaponHandler";
-import checkWinner from "../mixins/checkWinner"
+import checkWinner from "../mixins/checkWinner";
 export default {
   name: "bullet1",
   data() {
@@ -29,14 +40,17 @@ export default {
     fly: function(X, Y) {
       this.weaponFly(X, Y);
       if (this.checkHit()) {
-        window.clearInterval(flying);
-        this.opponent.tank.life-=this.bullet.damage[this.bullet.type-1];
+        if (this.$store.state.sound) {
+          this.hit_effect.play();
+        }
+        window.clearInterval(flying1);
+        this.opponent.tank.life -= this.bullet.damage[this.bullet.type - 1];
         this.reviving();
-        if(this.opponent.tank.life<=0){
+        if (this.opponent.tank.life <= 0) {
           this.checkWinner();
         }
       } else if (this.bulletCollision() || this.bullet.exploded) {
-        window.clearInterval(flying);
+        window.clearInterval(flying1);
         this.bullet.fired = false;
         this.tank.cannon.fired = false;
       }
@@ -44,10 +58,10 @@ export default {
     startFire: function() {
       let X = this.bullet.vectorX;
       let Y = this.bullet.vectorY;
-      window.clearInterval(flying);
+      window.clearInterval(flying1);
       this.bullet.fired = true;
 
-      flying = setInterval(() => this.fly(X, Y), 10);
+      flying1 = setInterval(() => this.fly(X, Y), 10);
     },
     getPosition: function() {
       let left = this.$refs["bullet_position"].getBoundingClientRect().left;
@@ -74,14 +88,26 @@ export default {
     tank: function() {
       return this.$store.state.tank1;
     },
-     mine: function() {
+    mine: function() {
       return this.$store.state.mine1;
+    },
+    hit_effect: function() {
+      return $("#hit_audio")[0];
+    },
+    fire_effect: function() {
+      return $("#missle")[0];
+    },
+    explode_effect: function() {
+      return $("#explode_audio")[0];
     }
   },
   created() {
     bus.$on("fire1", data => {
       this.bullet.type = this.bullet.tmpType;
       if (!this.bullet.fired && this.bullet.load[this.bullet.type - 1] > 0) {
+        console.log(
+          !this.bullet.fired && this.bullet.load[this.bullet.type - 1]
+        );
         this.$store.state.bullet1.load[this.$store.state.bullet1.type - 1]--;
         this.flyingVector();
         this.weaponPrepare(data);
@@ -89,20 +115,31 @@ export default {
       } else if (
         this.bullet.fired &&
         !this.bullet.exploded &&
-        this.bullet.type == 3&&
-         this.$store.state.mine1[1]
+        this.bullet.type == 3 &&
+        this.$store.state.mine1[1]
       ) {
         this.mine[1] = false;
         this.mineExplode();
       }
     });
-    
   },
-   beforeDestroy() {
-    window.clearInterval(flying);
+  mounted() {
+    this.hit_effect.load();
+    this.explode_effect.load();
 
+    this.fire_effect.load();
   },
-  mixins: [moveTank, moveCannon, checkHit, bulletCollision, weaponHandler, checkWinner]
+  beforeDestroy() {
+    window.clearInterval(flying1);
+  },
+  mixins: [
+    moveTank,
+    moveCannon,
+    checkHit,
+    bulletCollision,
+    weaponHandler,
+    checkWinner
+  ]
 };
 </script>
 <style scoped>

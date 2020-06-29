@@ -124,7 +124,7 @@
         <input
           type="number"
           v-model="$store.state.bullet1.damage[0]"
-          placeholder="(預設為10)"
+          placeholder="(預設為20)"
           required="true"
         />
         <h2>
@@ -134,7 +134,7 @@
         <input
           type="number"
           v-model="$store.state.bullet1.damage[1]"
-          placeholder="(預設為20)"
+          placeholder="(預設為30)"
           required="true"
         />
         <h2>
@@ -144,7 +144,7 @@
         <input
           type="number"
           v-model="$store.state.bullet1.damage[2]"
-          placeholder="(預設為30)"
+          placeholder="(預設為40)"
           required="true"
         />
         <h2>
@@ -278,7 +278,7 @@
         <input
           type="number"
           v-model="$store.state.bullet2.damage[0]"
-          placeholder="(預設為10)"
+          placeholder="(預設為20)"
           required="true"
         />
         <h2>
@@ -288,7 +288,7 @@
         <input
           type="number"
           v-model="$store.state.bullet2.damage[1]"
-          placeholder="(預設為20)"
+          placeholder="(預設為30)"
           required="true"
         />
         <h2>
@@ -298,7 +298,7 @@
         <input
           type="number"
           v-model="$store.state.bullet2.damage[2]"
-          placeholder="(預設為30)"
+          placeholder="(預設為40)"
           required="true"
         />
         <h2>
@@ -511,19 +511,22 @@ export default {
   left: 10%;
 }
 #chooseMapPage {
+  
+    top: 13%;
+
   border-radius: 30px;
   margin: 0 auto;
   width: 1500px;
   height: 1500px;
   position: relative;
   margin-bottom: 10px;
-  background-color: rgb(96, 133, 37);
+  background-color: black;
   border-color: black;
   left: 20px;
 }
 .chooseMapPageButton {
   border-width: 5px;
-  border-color: black;
+  border-color: rgb(151, 151, 151);
   border-style: solid;
   border-radius: 20px;
   position: relative;
@@ -556,15 +559,18 @@ export default {
 }
 #showMap {
   border-radius: 20px;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  position: absolute;
-  height: 7%;
-  width: 8%;
-  z-index: 501;
-  margin-left: -47%;
-  margin-top: 39%;
+    border-width: 2px;
+    border-color: rgb(255, 238, 89);
+    border-style: solid;
+    color: white;
+    background: transparent;
+    position: absolute;
+    height: 15%;
+    width: 26%;
+    z-index: 501;
+    margin-left: -86%;
+    margin-top: 44%;
+    font-size: 50px;
 }
 .names {
   display: block;
@@ -589,52 +595,64 @@ export default {
   width: 1000px;
 }
 #openRule {
-  border-radius: 20px;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  position: absolute;
-  height: 7%;
-  width: 8%;
-  z-index: 501;
-  margin-left: 50%;
-  margin-top: 39%;
+ border-radius: 20px;
+    border-width: 2px;
+    border-color: rgb(136, 211, 255);
+    border-style: solid;
+    color: white;
+    background: transparent;
+    position: absolute;
+    height: 15%;
+    width: 26%;
+    z-index: 501;
+    margin-left: 33%;
+    margin-top: 44%;
+    font-size: 50px;
 }
 #openModify {
-  border-radius: 20px;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  position: absolute;
-  height: 7%;
-  width: 8%;
-  z-index: 501;
-  margin-left: 85%;
-  margin-top: 39%;
+    border-radius: 20px;
+    border-width: 2px;
+    border-color: rgb(255, 144, 222);
+    border-style: solid;
+    color: white;
+    background: transparent;
+    position: absolute;
+    height: 15%;
+    width: 26%;
+    z-index: 501;
+    margin-left: 64%;
+    margin-top: 44%;
+    font-size: 50px;
 }
 #saveModify {
-  border-radius: 20px;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  position: absolute;
-  height: 7%;
-  width: 8%;
-  z-index: 501;
-  margin-left: -39%;
-  margin-top: 48.4%;
+ border-radius: 20px;
+    border-width: 2px;
+    border-color: rgb(136, 211, 255);
+    border-style: solid;
+    color: white;
+    background: transparent;
+    position: absolute;
+    height: 15%;
+    width: 26%;
+    z-index: 501;
+       margin-left: -48%;
+    margin-top: 53.5%;
+    font-size: 50px;
 }
 #recallModify {
   border-radius: 20px;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  position: absolute;
-  height: 7%;
-  width: 8%;
-  z-index: 501;
-  margin-left: -48%;
-  margin-top: 48.4%;
+    border-width: 2px;
+    border-color: rgb(255, 238, 89);
+    border-style: solid;
+    color: white;
+    background: transparent;
+    position: absolute;
+    height: 15%;
+    width: 26%;
+    z-index: 501;
+          margin-left: -14%;
+    margin-top: 53.5%;
+    font-size: 50px;
 }
 #modify {
   background-color: white;

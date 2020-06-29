@@ -28,5 +28,12 @@ export default {
 };
 </script>
 <style >
-  
+  .walls {
+  position: absolute;
+  border-radius: 5px;
+  background: url(../../img/brick.jpg);
+  border-color: rgb(128, 46, 26);
+  border-style: outset;
+  border-width: 5px;
+}
 </style>

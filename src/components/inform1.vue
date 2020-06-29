@@ -95,7 +95,7 @@ border-style: solid;
   border-width: 5px;
   display: inline-block;
   position: absolute;
-  background-color: transparent;
+  background-color: white;
   width: 20%;
   height: 150px;
   margin: 0 auto;

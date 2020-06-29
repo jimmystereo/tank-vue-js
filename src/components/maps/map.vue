@@ -13,6 +13,7 @@
 <script>
 var treasure_interval;
 var shrinking;
+// import $ from "jquery";
 import wall from "../walls/wall";
 import treasure from "../walls/treasure";
 export default {
@@ -22,7 +23,8 @@ export default {
     return {
       currentTreasure: {
         droped: false
-      }
+      },
+      effect: false
     };
   },
   methods: {
@@ -93,16 +95,32 @@ export default {
 </script>
 <style scoped>
 #court {
+  background: url(../../img/grass.jpg);
+  border-radius: 25px;
   border-style: inset;
   margin: 0 auto;
   position: relative;
   margin-top: 0px;
   margin-bottom: 10px;
-  background-color: rgb(255, 248, 183);
-  border-color: rgb(119, 65, 14);
-  border-width: 20px;
+  /* background-color: rgb(14, 20, 14); */
+  border-color: rgb(68, 47, 28);
+  border-width: 10px;
   left: 20px;
   margin-top: 15px;
+}
+#effect {
+  background: url(/img/winner.768c419d.png);
+  background-color: rgb(255, 255, 255);
+  border-color: white;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 20px;
+  position: absolute;
+  margin: 0 auto;
+  height: 50%;
+  width: 50%;
+  left: 25%;
+  top: 20%;
 }
 #count_down {
   text-align: center;

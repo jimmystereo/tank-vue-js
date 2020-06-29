@@ -33,7 +33,7 @@ export default {
       if(this.$store.state.count_down<=15){
         return "red";
       }
-      return "black";
+      return "white";
     }
   },
   created: function() {
@@ -54,5 +54,6 @@ export default {
     margin: 0 auto;
     display: inline-block;
     font-size: 100px;
+    
 }
 </style>

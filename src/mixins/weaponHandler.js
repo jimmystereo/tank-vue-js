@@ -1,3 +1,4 @@
+// import $ from "jquery";
 export default {
     data() {
         return {
@@ -7,6 +8,7 @@ export default {
     },
     methods: {
         weaponPrepare: function () {
+
             this.bullet.fired = true;
             this.bullet.exploded = false;
             this.bullet.vectorX = -1 * this.tank.tank.vector[0];
@@ -16,8 +18,17 @@ export default {
             if (this.bullet.deg >= 180) {
                 this.bullet.deg -= 180;
             }
-            //設定武器
             let type = this.bullet.type;
+            //發射音效
+            if (this.$store.state.sound) {
+                if (this.bullet.type != 3) {
+                    // let m = $("#missle")[0];
+                    this.fire_effect.load();
+                    this.fire_effect.play();
+                }
+            }
+            //設定武器
+
             if (type == 1) {
                 this.bullet.zIndex = 1;
 
@@ -70,7 +81,7 @@ export default {
                 let d = Math.sqrt(Math.pow((bullet_centerX - centerX), 2) + Math.pow((bullet_centerY - centerY), 2));
                 if (d <= this.opponent.tank.height * 2) {
                     if (this.mine[0]) {
-                        this.mine[0]= false;
+                        this.mine[0] = false;
                         this.mineExplode();
                     }
                 }
@@ -82,9 +93,15 @@ export default {
             this.bullet.color = 'yellow';
             // this.explodeAnim();
             console.log('mineExplode')
-            this.mineTimeout1 = setTimeout(this.explodeAnim, this.bullet.mineExplodeTime*1000);
+            this.mineTimeout1 = setTimeout(this.explodeAnim, this.bullet.mineExplodeTime * 1000);
         },
         explodeAnim: function () {
+            if (this.$store.state.sound) {
+                // let h = $("#explode_audio")[0];
+                this.explode_effect.load();
+                this.explode_effect.play();
+
+            }
             this.bullet.zIndex = 200;
             this.bullet.width = 400;
             this.bullet.height = 400;

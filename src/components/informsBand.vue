@@ -1,7 +1,7 @@
 <template>
   <div id="informsBand" style="display= inline-block">
     <slot></slot>
-    <button id="bandReset" v-on:click="reset()">跳出遊戲</button>
+    <button id="bandReset" v-on:click="reset()">EXIT</button>
   </div>
 </template>
 
@@ -36,6 +36,7 @@ export default {
   position: absolute;
   background-color: transparent;
   border-color: violet;
+  color:white;
 }
 #informsBand {
   width: 100%;

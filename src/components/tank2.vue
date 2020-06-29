@@ -55,7 +55,7 @@ export default {
 </script>
 <style scoped>
 #tank2 {
-  border-color: rgb(241, 64, 108);
+  border-color: rgb(245, 32, 85);
 }
 #cannon_top {
   z-index: 1000;
@@ -69,18 +69,23 @@ export default {
   margin: 0 auto;
 }
 #tank2_cannon {
- border-radius:15px;
+  border-radius: 15px;
   transform-origin: right center;
   position: relative;
   top: calc(50% - 10px);
-  left: -50%;
+  left: -53%;
   z-index: 50;
   height: 20px;
   width: 80px;
   background-color: black;
+  border-color: gray;
+  border-style: solid;
+  border-width: 1px;
   margin: 0 auto;
 }
 #name {
+  color: white;
+
   top: 110%;
   left: 16%;
   font-size: x-large;

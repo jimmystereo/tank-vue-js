@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import { store } from './store/store'
-// import $ from 'jquery'
+import $ from 'jquery'
 Vue.config.productionTip = true
 
 export const bus = new Vue();
@@ -19,4 +19,4 @@ window.addEventListener("keydown", function (e) {
   }
 }, false);
 
-document.getElementsByTagName('body')[0].style.zoom=0.75;
+$('body')[0].style.zoom=0.75;
